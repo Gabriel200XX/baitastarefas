@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="login.Controller">
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+   </rowConstraints>
+   <children>
+      <Pane prefHeight="251.0" prefWidth="294.0">
+         <children>
+            <Button fx:id="loginEnviar" layoutX="205.0" layoutY="177.0" mnemonicParsing="false" onAction="#enviarAction" prefHeight="25.0" prefWidth="72.0" text="Enviar" />
+            <TextField fx:id="loginUsuario" layoutX="17.0" layoutY="56.0" prefHeight="25.0" prefWidth="260.0" />
+            <Label layoutX="17.0" layoutY="39.0" prefHeight="17.0" prefWidth="44.0" text="Usuário" />
+            <TextField fx:id="loginSenha" layoutX="17.0" layoutY="125.0" prefHeight="25.0" prefWidth="260.0" />
+            <Label layoutX="17.0" layoutY="108.0" prefHeight="17.0" prefWidth="44.0" text="Senha" />
+            <Button fx:id="loginCadastrar" layoutX="17.0" layoutY="177.0" mnemonicParsing="false" onAction="#cadastrarAction" prefHeight="25.0" prefWidth="89.0" text="Cadastre-se" />
+         </children>
+      </Pane>
+   </children>
+</GridPane>
