@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import database.dao.UserDAO;
+
 public class Controller {
     @FXML
     private TextField loginUsuario;
@@ -16,6 +18,12 @@ public class Controller {
     private TextField loginSenha;
     @FXML
     private Button loginEnviar;
+
+    private UserDAO userDAO;
+
+    public Controller() {
+        this.userDAO = new UserDAO();
+    }
 
     public void cadastrarAction() {
         System.out.println("alô");
