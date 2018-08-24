@@ -116,6 +116,30 @@ public class UserDAO {
         return user;
     }
 
+    public boolean autenticaUser(String username, String senha) {
+        boolean autentica = false;
+        try {
+            // Cria a conexão com o banco de dados
+            Connection conn = (new ConnectionFactory()).getConnection();
+            PreparedStatement p =
+                    conn.prepareStatement("SELECT user, password FROM Users WHERE user LIKE ? AND password LIKE ?");
+            p.setString(1, username);
+            p.setString(2, senha);
+
+            ResultSet resultado = p.executeQuery();
+
+            if (resultado.next()){
+                autentica = true;
+            }
+            p.close();
+            conn.close();
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return autentica;
+    }
+
     /*// Exclui todos os registros da Tabela
     public void deleteAll() {
         try {

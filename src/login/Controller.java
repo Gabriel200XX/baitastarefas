@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 
 import database.dao.UserDAO;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class Controller {
@@ -39,12 +40,25 @@ public class Controller {
         homeStage.show();
     }
     public void enviarAction() throws Exception {
-        System.out.println(loginUsuario.getText());
-        Parent root = FXMLLoader.load(getClass().getResource("../home/home.fxml"));
-        loginEnviar.getScene().getWindow().hide();
-        Stage homeStage = new Stage();
-        homeStage.setTitle("Home - Baitas Tarefas");
-        homeStage.setScene(new Scene(root, 800, 600));
-        homeStage.show();
+        if (loginUsuario.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Preencha o campo Usuário!", "Atenção", JOptionPane.WARNING_MESSAGE);
+        } else if (loginUsuario.getText().length() > 255) {
+            JOptionPane.showMessageDialog(null, "O campo Usuário não pode ser maior que 255!", "Atenção", JOptionPane.WARNING_MESSAGE);
+        } else if (loginSenha.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Preencha o campo Senha!", "Atenção", JOptionPane.WARNING_MESSAGE);
+        } else if (loginSenha.getText().length() > 20) {
+            JOptionPane.showMessageDialog(null, "O campo Senha não pode ser maior que 20!", "Atenção", JOptionPane.WARNING_MESSAGE);
+        } else {
+            if (this.userDAO.autenticaUser(loginUsuario.getText(), loginSenha.getText())) {
+                Parent root = FXMLLoader.load(getClass().getResource("../home/home.fxml"));
+                loginEnviar.getScene().getWindow().hide();
+                Stage homeStage = new Stage();
+                homeStage.setTitle("Home - Baitas Tarefas");
+                homeStage.setScene(new Scene(root, 800, 600));
+                homeStage.show();
+            } else {
+                JOptionPane.showMessageDialog(null, "Usuário ou Senha incorretos!", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 }

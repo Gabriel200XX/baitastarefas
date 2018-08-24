@@ -25,6 +25,8 @@ public class Controller {
     private TextField signinSenha;
     @FXML
     private Button signinLogin;
+    @FXML
+    private Button signinEnviar;
 
     private UserDAO userDAO;
 
@@ -40,21 +42,39 @@ public class Controller {
         homeStage.setScene(new Scene(root, 294, 251));
         homeStage.show();
     }
-    public void enviarAction() {
+    public void enviarAction() throws IOException {
         User user = new User();
-        System.out.println(signinNome.getText());
-        System.out.println(signinUsuario.getText());
-        System.out.println(signinSenha.getText());
 
-        user.setName(signinNome.getText());
-        user.setUser(signinUsuario.getText());
-        user.setPassword(signinSenha.getText());
-
-        if (this.userDAO.getByUser(signinUsuario.getText()) == null) {
-            this.userDAO.insert(user);
+        if (signinNome.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Preencha o campo Nome!", "Atenção", JOptionPane.WARNING_MESSAGE);
+        } else if (signinNome.getText().length() > 255) {
+            JOptionPane.showMessageDialog(null, "O campo Nome não pode ser maior que 255!", "Atenção", JOptionPane.WARNING_MESSAGE);
+        } else if (signinUsuario.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Preencha o campo Usuário!", "Atenção", JOptionPane.WARNING_MESSAGE);
+        } else if (signinUsuario.getText().length() > 255) {
+            JOptionPane.showMessageDialog(null, "O campo Usuário não pode ser maior que 255!", "Atenção", JOptionPane.WARNING_MESSAGE);
+        } else if (signinSenha.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Preencha o campo Senha!", "Atenção", JOptionPane.WARNING_MESSAGE);
+        } else if (signinUsuario.getText().length() > 20) {
+            JOptionPane.showMessageDialog(null, "O campo Senha não pode ser maior que 20!", "Atenção", JOptionPane.WARNING_MESSAGE);
         } else {
-            System.out.println("OLá");
-            JOptionPane.showMessageDialog(null, "Usuário já existente!", "Atenção", JOptionPane.ERROR_MESSAGE);
+            user.setName(signinNome.getText());
+            user.setUser(signinUsuario.getText());
+            user.setPassword(signinSenha.getText());
+
+            if (this.userDAO.getByUser(signinUsuario.getText()) == null) {
+                this.userDAO.insert(user);
+                Parent root = FXMLLoader.load(getClass().getResource("../home/home.fxml"));
+                signinEnviar.getScene().getWindow().hide();
+                Stage homeStage = new Stage();
+                homeStage.setTitle("Home-Baitas Tarefas");
+                homeStage.setScene(new Scene(root, 800, 600));
+                homeStage.show();
+            } else {
+                JOptionPane.showMessageDialog(null, "Usuário já existente!", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
         }
+
+
     }
 }

@@ -26,7 +26,7 @@
             <Label layoutX="17.0" layoutY="150.0" prefHeight="17.0" prefWidth="44.0" text="Senha" />
             <PasswordField fx:id="signinSenha" layoutX="17.0" layoutY="167.0" prefHeight="26.0" prefWidth="260.0" />
             <Button fx:id="signinLogin" layoutX="26.0" layoutY="232.0" mnemonicParsing="false" onAction="#loginAction" text="Login" />
-            <Button fx:id="loginEnviar" layoutX="205.0" layoutY="232.0" mnemonicParsing="false" onAction="#enviarAction" prefHeight="25.0" prefWidth="72.0" text="Enviar" />
+            <Button fx:id="signinEnviar" layoutX="205.0" layoutY="232.0" mnemonicParsing="false" onAction="#enviarAction" prefHeight="25.0" prefWidth="72.0" text="Enviar" />
          </children>
       </Pane>
    </children>
