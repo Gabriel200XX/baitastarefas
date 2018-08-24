@@ -17,6 +17,7 @@ public class ConnectionFactory {
                     .getConnection(stringConexao
                             , usuarioBD, senhaBD);
         }catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException();
         }
     }

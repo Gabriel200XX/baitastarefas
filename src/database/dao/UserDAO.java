@@ -66,7 +66,7 @@ public class UserDAO {
     }
 
     // Selecionar um usuário específico pelo id
-    public User getById(User user) {
+    /*public User getById(long id) {
         try {
             // Cria a conexão com o banco de dados
             Connection conn = (new ConnectionFactory()).getConnection();
@@ -86,6 +86,34 @@ public class UserDAO {
         }catch(Exception e) {
             e.printStackTrace();
         }
+    }*/
+
+    public User getByUser(String username) {
+        User user = null;
+        try {
+            // Cria a conexão com o banco de dados
+            Connection conn = (new ConnectionFactory()).getConnection();
+            PreparedStatement p =
+                    conn.prepareStatement("SELECT idUsers, name, user, password FROM Users WHERE user LIKE ?");
+            p.setString(1, username);
+
+            ResultSet resultado = p.executeQuery();
+
+            if (resultado.next()){
+                user = new User();
+
+                user.setId(resultado.getLong(1));
+                user.setName(resultado.getString(2));
+                user.setUser(resultado.getString(3));
+                user.setPassword(resultado.getString(4));
+            }
+            p.close();
+            conn.close();
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return user;
     }
 
     /*// Exclui todos os registros da Tabela

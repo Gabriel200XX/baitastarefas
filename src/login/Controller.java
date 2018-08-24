@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 
 import database.dao.UserDAO;
 
+import java.io.IOException;
+
 public class Controller {
     @FXML
     private TextField loginUsuario;
@@ -18,6 +20,8 @@ public class Controller {
     private TextField loginSenha;
     @FXML
     private Button loginEnviar;
+    @FXML
+    private Button loginCadastrar;
 
     private UserDAO userDAO;
 
@@ -25,8 +29,14 @@ public class Controller {
         this.userDAO = new UserDAO();
     }
 
-    public void cadastrarAction() {
-        System.out.println("alô");
+    public void cadastrarAction() throws IOException {
+        System.out.println(loginUsuario.getText());
+        Parent root = FXMLLoader.load(getClass().getResource("../signin/signin.fxml"));
+        loginCadastrar.getScene().getWindow().hide();
+        Stage homeStage = new Stage();
+        homeStage.setTitle("Cadastre-se - Baitas Tarefas");
+        homeStage.setScene(new Scene(root, 294, 294));
+        homeStage.show();
     }
     public void enviarAction() throws Exception {
         System.out.println(loginUsuario.getText());
