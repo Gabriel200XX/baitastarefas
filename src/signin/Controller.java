@@ -67,7 +67,7 @@ public class Controller {
                 Parent root = FXMLLoader.load(getClass().getResource("../home/home.fxml"));
                 signinEnviar.getScene().getWindow().hide();
                 Stage homeStage = new Stage();
-                homeStage.setTitle("Home-Baitas Tarefas");
+                homeStage.setTitle("Home - Baitas Tarefas");
                 homeStage.setScene(new Scene(root, 800, 600));
                 homeStage.show();
             } else {

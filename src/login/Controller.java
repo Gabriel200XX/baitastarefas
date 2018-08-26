@@ -31,13 +31,12 @@ public class Controller {
     }
 
     public void cadastrarAction() throws IOException {
-        System.out.println(loginUsuario.getText());
         Parent root = FXMLLoader.load(getClass().getResource("../signin/signin.fxml"));
         loginCadastrar.getScene().getWindow().hide();
-        Stage homeStage = new Stage();
-        homeStage.setTitle("Cadastre-se - Baitas Tarefas");
-        homeStage.setScene(new Scene(root, 294, 294));
-        homeStage.show();
+        Stage cadastrarStage = new Stage();
+        cadastrarStage.setTitle("Cadastre-se - Baitas Tarefas");
+        cadastrarStage.setScene(new Scene(root, 294, 294));
+        cadastrarStage.show();
     }
     public void enviarAction() throws Exception {
         if (loginUsuario.getText().equals("")) {
