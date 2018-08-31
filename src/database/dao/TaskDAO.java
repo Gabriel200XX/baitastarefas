@@ -61,4 +61,26 @@ public class TaskDAO {
         }
     }
 
+    public User getTaskByIdUser(long id) {
+        try {
+            // Cria a conexão com o banco de dados
+            Connection conn = (new ConnectionFactory()).getConnection();
+            PreparedStatement p =
+                    conn.prepareStatement("SELECT  FROM Tasks WHERE idUsers = ?");
+            p.setLong(1, user.getId());
+
+            ResultSet resultado = p.executeQuery();
+
+            if (resultado.next()){
+                return (User) resultado;
+            } else {
+                return (User) null;
+            }
+            p.close();
+            conn.close();
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
