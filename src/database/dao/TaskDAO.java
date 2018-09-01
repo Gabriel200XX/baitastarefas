@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import database.models.Task;
 
@@ -61,26 +63,33 @@ public class TaskDAO {
         }
     }
 
-    public User getTaskByIdUser(long id) {
+    public List getTaskByIdUser(long id) {
+        List<Task> taskList = new ArrayList<Task>();
         try {
             // Cria a conexão com o banco de dados
             Connection conn = (new ConnectionFactory()).getConnection();
             PreparedStatement p =
-                    conn.prepareStatement("SELECT  FROM Tasks WHERE idUsers = ?");
-            p.setLong(1, user.getId());
+                    conn.prepareStatement("SELECT idTasks, name, previsionFinish, createdAt FROM Tasks WHERE Users_idUsers = ?");
+            p.setLong(1, id);
 
             ResultSet resultado = p.executeQuery();
 
-            if (resultado.next()){
-                return (User) resultado;
-            } else {
-                return (User) null;
+            while (resultado.next()){
+                Task task = new Task();
+
+                task.setId(resultado.getLong(1));
+                task.setName(resultado.getString(2));
+                task.setPrevisionFinish(resultado.getDate(3));
+                task.setCreatedAt(resultado.getDate(4));
+
+                taskList.add(task);
             }
             p.close();
             conn.close();
         }catch(Exception e) {
             e.printStackTrace();
         }
+        return taskList;
     }
 
 }

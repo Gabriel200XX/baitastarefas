@@ -20,6 +20,14 @@ public class UserDAO {
             p.setString(2, user.getUser());
             p.setString(3, user.getPassword());
 
+            PreparedStatement pS =
+            conn.prepareStatement("SELECT MAX(idUsers) FROM Users");
+            ResultSet resultado = pS.executeQuery();
+
+            if (resultado.next()) {
+                this.createSession(resultado.getLong(1));
+            }
+
             p.execute();
             p.close();
             conn.close();
@@ -106,6 +114,8 @@ public class UserDAO {
                 user.setName(resultado.getString(2));
                 user.setUser(resultado.getString(3));
                 user.setPassword(resultado.getString(4));
+
+                this.createSession(user.getId());
             }
             p.close();
             conn.close();
@@ -114,6 +124,22 @@ public class UserDAO {
         }
 
         return user;
+    }
+
+    public void createSession(long idUser) {
+        try {
+            // Cria a conexão com o banco de dados
+            Connection conn = (new ConnectionFactory()).getConnection();
+            PreparedStatement p =
+                    conn.prepareStatement("INSERT Session(Users_idUsers) VALUES (?)");
+            p.setLong(1, idUser);
+
+            p.execute();
+            p.close();
+            conn.close();
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean autenticaUser(String username, String senha) {

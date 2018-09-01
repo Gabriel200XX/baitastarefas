@@ -1,5 +1,8 @@
 package database.models;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+
 import java.sql.Date;
 
 public class Task {
@@ -8,6 +11,7 @@ public class Task {
     private long idUser;
     private String name;
     private Date previsionFinish;
+    private Date createdAt;
 
     public long getId() {
         return id;
@@ -35,5 +39,13 @@ public class Task {
     }
     public void setPrevisionFinish(Date previsionFinish) {
         this.previsionFinish = previsionFinish;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }

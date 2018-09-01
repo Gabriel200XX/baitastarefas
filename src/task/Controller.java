@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
 
+import database.dao.SessionDAO;
 import database.dao.TaskDAO;
 import database.models.Task;
 import javafx.stage.Stage;
@@ -30,9 +31,11 @@ public class Controller {
     private Button taskEnviar;
 
     private TaskDAO taskDAO;
+    private SessionDAO sessionDAO;
 
     public Controller() {
         this.taskDAO = new TaskDAO();
+        this.sessionDAO = new SessionDAO();
     }
 
     public void homeAction() {
@@ -42,7 +45,7 @@ public class Controller {
     public void enviarAction() throws ParseException, IOException {
         Task task = new Task();
         DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        task.setIdUser(1);
+        task.setIdUser(sessionDAO.getIdUserSession());
         task.setName(taskTarefa.getText());
         task.setPrevisionFinish(new Date(format.parse(taskPrevisao.getText()).getTime()));
         this.taskDAO.insert(task);
