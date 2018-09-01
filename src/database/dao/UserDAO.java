@@ -5,9 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import database.dao.SessionDAO;
 import database.models.User;
 
 public class UserDAO {
+
+    private SessionDAO sessionDAO = new SessionDAO();
 
     // Insere um Usuário
     public void insert(User user) {
@@ -25,7 +28,7 @@ public class UserDAO {
             ResultSet resultado = pS.executeQuery();
 
             if (resultado.next()) {
-                this.createSession(resultado.getLong(1));
+                this.sessionDAO.createSession(resultado.getLong(1));
             }
 
             p.execute();
@@ -114,8 +117,6 @@ public class UserDAO {
                 user.setName(resultado.getString(2));
                 user.setUser(resultado.getString(3));
                 user.setPassword(resultado.getString(4));
-
-                this.createSession(user.getId());
             }
             p.close();
             conn.close();
@@ -126,29 +127,13 @@ public class UserDAO {
         return user;
     }
 
-    public void createSession(long idUser) {
-        try {
-            // Cria a conexão com o banco de dados
-            Connection conn = (new ConnectionFactory()).getConnection();
-            PreparedStatement p =
-                    conn.prepareStatement("INSERT Session(Users_idUsers) VALUES (?)");
-            p.setLong(1, idUser);
-
-            p.execute();
-            p.close();
-            conn.close();
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public boolean autenticaUser(String username, String senha) {
         boolean autentica = false;
         try {
             // Cria a conexão com o banco de dados
             Connection conn = (new ConnectionFactory()).getConnection();
             PreparedStatement p =
-                    conn.prepareStatement("SELECT user, password FROM Users WHERE user LIKE ? AND password LIKE ?");
+                    conn.prepareStatement("SELECT idUsers, user, password FROM Users WHERE user LIKE ? AND password LIKE ?");
             p.setString(1, username);
             p.setString(2, senha);
 
@@ -156,6 +141,7 @@ public class UserDAO {
 
             if (resultado.next()){
                 autentica = true;
+                this.sessionDAO.createSession(resultado.getLong(1));
             }
             p.close();
             conn.close();

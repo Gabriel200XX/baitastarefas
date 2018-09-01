@@ -16,10 +16,11 @@ public class TaskDAO {
             // Cria a conexão com o banco de dados
             Connection conn = (new ConnectionFactory()).getConnection();
             PreparedStatement p =
-                    conn.prepareStatement("INSERT INTO Tasks(Users_idUsers, name, previsionFinish) values(?, ?, ?) ");
+                    conn.prepareStatement("INSERT INTO Tasks(Users_idUsers, name, previsionFinish, finished) values(?, ?, ?, ?) ");
             p.setLong(1, task.getIdUser());
             p.setString(2, task.getName());
             p.setDate(3, task.getPrevisionFinish());
+            p.setBoolean(4, false);
 
             p.execute();
             p.close();

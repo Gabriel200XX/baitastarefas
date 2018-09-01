@@ -6,6 +6,21 @@ import java.sql.ResultSet;
 
 public class SessionDAO {
 
+    public void createSession(long idUser) {
+        try {
+            // Cria a conexão com o banco de dados
+            Connection conn = (new ConnectionFactory()).getConnection();
+            PreparedStatement p =
+                    conn.prepareStatement("INSERT Session(Users_idUsers) VALUES (?)");
+            p.setLong(1, idUser);
+
+            p.execute();
+            p.close();
+            conn.close();
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public long getIdUserSession() {
         long id = 0;

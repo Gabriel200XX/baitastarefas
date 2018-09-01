@@ -11,6 +11,7 @@ public class Task {
     private long idUser;
     private String name;
     private Date previsionFinish;
+    private boolean finished;
     private Date createdAt;
 
     public long getId() {
@@ -47,5 +48,13 @@ public class Task {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
     }
 }
