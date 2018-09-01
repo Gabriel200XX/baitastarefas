@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import database.dao.UserDAO;
+import utils.AbreTela;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -25,18 +26,16 @@ public class Controller {
     private Button loginCadastrar;
 
     private UserDAO userDAO;
+    private AbreTela abreTela;
 
     public Controller() {
         this.userDAO = new UserDAO();
+        this.abreTela = new AbreTela();
     }
 
     public void cadastrarAction() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("../signin/signin.fxml"));
         loginCadastrar.getScene().getWindow().hide();
-        Stage cadastrarStage = new Stage();
-        cadastrarStage.setTitle("Cadastre-se - Baitas Tarefas");
-        cadastrarStage.setScene(new Scene(root, 294, 294));
-        cadastrarStage.show();
+        this.abreTela.abreSignin();
     }
     public void enviarAction() throws Exception {
         if (loginUsuario.getText().equals("")) {
@@ -49,12 +48,8 @@ public class Controller {
             JOptionPane.showMessageDialog(null, "O campo Senha não pode ser maior que 20!", "Atenção", JOptionPane.WARNING_MESSAGE);
         } else {
             if (this.userDAO.autenticaUser(loginUsuario.getText(), loginSenha.getText())) {
-                Parent root = FXMLLoader.load(getClass().getResource("../home/home.fxml"));
                 loginEnviar.getScene().getWindow().hide();
-                Stage homeStage = new Stage();
-                homeStage.setTitle("Home - Baitas Tarefas");
-                homeStage.setScene(new Scene(root, 800, 600));
-                homeStage.show();
+                this.abreTela.abreHome();
             } else {
                 JOptionPane.showMessageDialog(null, "Usuário ou Senha incorretos!", "Erro", JOptionPane.ERROR_MESSAGE);
             }

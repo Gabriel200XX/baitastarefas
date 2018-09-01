@@ -60,7 +60,11 @@
             </Button>
             <TableView fx:id="homeTable" layoutX="59.0" layoutY="340.0" prefHeight="200.0" prefWidth="641.0">
               <columns>
-                  <TableColumn prefWidth="26.0" />
+                  <TableColumn prefWidth="26.0">
+                      <cellValueFactory>
+                          <PropertyValueFactory property="finished" />
+                      </cellValueFactory>
+                  </TableColumn>
                   <TableColumn prefWidth="220.00001525878906" text="Tarefa">
                      <cellValueFactory>
                         <PropertyValueFactory property="name" />

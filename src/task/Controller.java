@@ -13,6 +13,7 @@ import database.dao.SessionDAO;
 import database.dao.TaskDAO;
 import database.models.Task;
 import javafx.stage.Stage;
+import utils.AbreTela;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -32,14 +33,17 @@ public class Controller {
 
     private TaskDAO taskDAO;
     private SessionDAO sessionDAO;
+    private AbreTela abreTela;
 
     public Controller() {
         this.taskDAO = new TaskDAO();
         this.sessionDAO = new SessionDAO();
+        this.abreTela = new AbreTela();
     }
 
-    public void homeAction() {
-
+    public void homeAction() throws IOException {
+        taskVoltar.getScene().getWindow().hide();
+        this.abreTela.abreHome();
     }
 
     public void enviarAction() throws ParseException, IOException {
@@ -49,11 +53,7 @@ public class Controller {
         task.setName(taskTarefa.getText());
         task.setPrevisionFinish(new Date(format.parse(taskPrevisao.getText()).getTime()));
         this.taskDAO.insert(task);
-        Parent root = FXMLLoader.load(getClass().getResource("../home/home.fxml"));
         taskEnviar.getScene().getWindow().hide();
-        Stage homeStage = new Stage();
-        homeStage.setTitle("Home - Baitas Tarefas");
-        homeStage.setScene(new Scene(root, 800, 600));
-        homeStage.show();
+        this.abreTela.abreHome();
     }
 }

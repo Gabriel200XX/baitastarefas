@@ -13,6 +13,7 @@ import java.io.IOException;
 
 import database.dao.UserDAO;
 import database.models.User;
+import utils.AbreTela;
 
 import javax.swing.*;
 
@@ -29,18 +30,16 @@ public class Controller {
     private Button signinEnviar;
 
     private UserDAO userDAO;
+    private AbreTela abreTela;
 
     public Controller() {
         this.userDAO = new UserDAO();
+        this.abreTela = new AbreTela();
     }
 
     public void loginAction() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("../login/login.fxml"));
         signinLogin.getScene().getWindow().hide();
-        Stage homeStage = new Stage();
-        homeStage.setTitle("Login - Baitas Tarefas");
-        homeStage.setScene(new Scene(root, 294, 251));
-        homeStage.show();
+        this.abreTela.abreLogin();
     }
     public void enviarAction() throws IOException {
         User user = new User();
@@ -64,12 +63,8 @@ public class Controller {
 
             if (this.userDAO.getByUser(signinUsuario.getText()) == null) {
                 this.userDAO.insert(user);
-                Parent root = FXMLLoader.load(getClass().getResource("../home/home.fxml"));
                 signinEnviar.getScene().getWindow().hide();
-                Stage homeStage = new Stage();
-                homeStage.setTitle("Home - Baitas Tarefas");
-                homeStage.setScene(new Scene(root, 800, 600));
-                homeStage.show();
+                this.abreTela.abreHome();
             } else {
                 JOptionPane.showMessageDialog(null, "Usuário já existente!", "Erro", JOptionPane.ERROR_MESSAGE);
             }

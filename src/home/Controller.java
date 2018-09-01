@@ -21,6 +21,7 @@ import java.util.ResourceBundle;
 import database.dao.SessionDAO;
 import database.models.Task;
 import database.dao.TaskDAO;
+import utils.AbreTela;
 
 public class Controller implements Initializable {
     @FXML
@@ -30,6 +31,7 @@ public class Controller implements Initializable {
 
     private TaskDAO taskDAO;
     private SessionDAO sessionDAO;
+    private AbreTela abreTela;
 
     private final ObservableList<Task> data =
             FXCollections.observableArrayList();
@@ -38,6 +40,7 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.taskDAO = new TaskDAO();
         this.sessionDAO = new SessionDAO();
+        this.abreTela = new AbreTela();
         List<Task> task = this.taskDAO.getTaskByIdUser(sessionDAO.getIdUserSession());
         data.addAll(task);
 
@@ -45,11 +48,7 @@ public class Controller implements Initializable {
     }
 
     public void taskAction() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("../task/task.fxml"));
         homeTask.getScene().getWindow().hide();
-        Stage taskStage = new Stage();
-        taskStage.setTitle("Task - Baitas Tarefas");
-        taskStage.setScene(new Scene(root, 800, 600));
-        taskStage.show();
+        this.abreTela.abreTask();
     }
 }
