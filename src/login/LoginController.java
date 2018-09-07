@@ -15,7 +15,7 @@ import utils.AbreTela;
 import javax.swing.*;
 import java.io.IOException;
 
-public class Controller {
+public class LoginController {
     @FXML
     private TextField loginUsuario;
     @FXML
@@ -28,7 +28,7 @@ public class Controller {
     private UserDAO userDAO;
     private AbreTela abreTela;
 
-    public Controller() {
+    public LoginController() {
         this.userDAO = new UserDAO();
         this.abreTela = new AbreTela();
     }

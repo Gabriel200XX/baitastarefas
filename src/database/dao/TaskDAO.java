@@ -1,9 +1,6 @@
 package database.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +45,23 @@ public class TaskDAO {
         }
     }
 
+    public void patchFinish(Task task) {
+        try {
+            // Cria a conexão com o banco de dados
+            Connection conn = (new ConnectionFactory()).getConnection();
+            PreparedStatement p =
+                    conn.prepareStatement("UPDATE Tasks SET finished = ? WHERE idTasks = ?");
+            p.setBoolean(1, task.isFinished());
+            p.setLong(1, task.getId());
+
+            p.execute();
+            p.close();
+            conn.close();
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void deleteById(Task task) {
         try {
             // Cria a conexão com o banco de dados
@@ -62,6 +76,32 @@ public class TaskDAO {
         }catch(Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public Task getTaskById(Long id) {
+        Task task = null;
+        try {
+            // Cria a conexão com o banco de dados
+            Connection conn = (new ConnectionFactory()).getConnection();
+            PreparedStatement p =
+                    conn.prepareStatement("SELECT name, previsionFinish FROM Tasks WHERE idTasks = ?");
+            p.setLong(1, id);
+
+            ResultSet resultado = p.executeQuery();
+
+            if (resultado.next()){
+                task = new Task();
+
+                task.setName(resultado.getString(1));
+                task.setPrevisionFinish(resultado.getDate(2));
+            }
+            p.close();
+            conn.close();
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return task;
     }
 
     public List getTaskByIdUser(long id) {
@@ -81,7 +121,7 @@ public class TaskDAO {
                 task.setId(resultado.getLong(1));
                 task.setName(resultado.getString(2));
                 task.setPrevisionFinish(resultado.getDate(3));
-                task.setCreatedAt(resultado.getDate(4));
+                task.setCreatedAt(resultado.getTimestamp(4));
 
                 taskList.add(task);
             }

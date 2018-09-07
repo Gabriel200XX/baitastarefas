@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Task {
 
@@ -12,7 +13,7 @@ public class Task {
     private String name;
     private Date previsionFinish;
     private boolean finished;
-    private Date createdAt;
+    private Timestamp createdAt;
 
     public long getId() {
         return id;
@@ -42,11 +43,11 @@ public class Task {
         this.previsionFinish = previsionFinish;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 

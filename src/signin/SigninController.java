@@ -17,7 +17,7 @@ import utils.AbreTela;
 
 import javax.swing.*;
 
-public class Controller {
+public class SigninController {
     @FXML
     private TextField signinNome;
     @FXML
@@ -32,7 +32,7 @@ public class Controller {
     private UserDAO userDAO;
     private AbreTela abreTela;
 
-    public Controller() {
+    public SigninController() {
         this.userDAO = new UserDAO();
         this.abreTela = new AbreTela();
     }
