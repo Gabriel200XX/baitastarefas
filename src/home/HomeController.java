@@ -82,33 +82,29 @@ public class HomeController implements Initializable {
                 final TableCell<Task, Task> cell = new TableCell<Task, Task>() {
 
                     private ImageView imageView = new ImageView(image);
+                    private ImageView imageView2 = new ImageView(image2);
 
-                    private Button btn = new Button(null, imageView);
-
-                    private long count;
+                    private Button btn;
 
                     @Override
                     public void updateItem(Task item, boolean empty) {
+                        btn = new Button(null, imageView);
                         super.updateItem(item, empty);
                         if (empty) {
                             setGraphic(null);
                         } else {
-                            home.HomeController.contador++;
                             Task data = getTableView().getItems().get(getIndex());
-                            if (home.HomeController.contador == 1 && nome.equals("Completar") && data.isFinished()) {
-                                imageView = new ImageView(image2);
-                                btn = new Button(null, imageView);
-                                System.out.println(count);
+                            if (nome.equals("Completar") && data.isFinished()) {
+                                btn.setGraphic(imageView2);
                             }
 
-                            acaoBotao();
+                            acaoBotao(data);
 
                             setGraphic(btn);
                         }
                     }
 
-                    public void acaoBotao() {
-                        Task data = getTableView().getItems().get(getIndex());
+                    public void acaoBotao(Task data) {
                         btn.setOnAction((ActionEvent event) -> {
                             taskId = data.getId();
                             if (nome.equals("Editar")) {
@@ -120,13 +116,6 @@ public class HomeController implements Initializable {
                             } else if (nome.equals("Excluir")) {
                                 excluirTask(taskId);
                             } else {
-                                if (data.isFinished()) {
-                                    imageView = new ImageView(image);
-                                    btn = new Button(null, imageView);
-                                } else {
-                                    imageView = new ImageView(image2);
-                                    btn = new Button(null, imageView);
-                                }
                                 patchTask(!data.isFinished(), taskId);
                             }
                         });
