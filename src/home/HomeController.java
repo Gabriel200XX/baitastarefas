@@ -37,125 +37,140 @@ public class HomeController implements Initializable {
 
     private final ObservableList<Task> data =
             FXCollections.observableArrayList();
+    private static long contador;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.taskDAO = new TaskDAO();
         this.sessionDAO = new SessionDAO();
         this.abreTela = new AbreTela();
-        List<Task> task = this.taskDAO.getTaskByIdUser(sessionDAO.getIdUserSession());
-        data.addAll(task);
 
-        addCheckboxToTable();
-        homeTable.setItems(data);
+        buscaTasks();
+
+        FileInputStream inputUCheck = null;
+        FileInputStream inputCheck = null;
 
         FileInputStream inputEdit = null;
         FileInputStream inputDelete = null;
         try {
+            inputUCheck = new FileInputStream("assets/uncheck.png");
+            inputCheck = new FileInputStream("assets/check.png");
+
             inputEdit = new FileInputStream("assets/edit.png");
             inputDelete = new FileInputStream("assets/garbage.png");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        Image imageEdit = new Image(inputEdit);
 
+        Image imageUCheck = new Image(inputUCheck);
+        Image imageCheck = new Image(inputCheck);
+
+        Image imageEdit = new Image(inputEdit);
         Image imageDelete = new Image(inputDelete);
 
-        addButtonToTable("Editar", imageEdit);
-        addButtonToTable("Excluir", imageDelete);
+        addButtonToTable(false, "Completar", imageUCheck, imageCheck);
+        addButtonToTable(true, "Editar", imageEdit, imageEdit);
+        addButtonToTable(true, "Excluir", imageDelete, imageDelete);
     }
 
-    private void addButtonToTable(String nome, Image image) {
-        TableColumn<Task, Void> colBtn = new TableColumn();
+    private void addButtonToTable(boolean fimLista, String nome, Image image, Image image2) {
+        TableColumn<Task, Task> colBtn = new TableColumn();
 
-        Callback<TableColumn<Task, Void>, TableCell<Task, Void>> cellFactory = new Callback<TableColumn<Task, Void>, TableCell<Task, Void>>() {
+        Callback<TableColumn<Task, Task>, TableCell<Task, Task>> cellFactory = new Callback<TableColumn<Task, Task>, TableCell<Task, Task>>() {
             @Override
-            public TableCell<Task, Void> call(final TableColumn<Task, Void> param) {
-                final TableCell<Task, Void> cell = new TableCell<Task, Void>() {
+            public TableCell<Task, Task> call(final TableColumn<Task, Task> param) {
+                final TableCell<Task, Task> cell = new TableCell<Task, Task>() {
 
-                    ImageView imageView = new ImageView(image);
+                    private ImageView imageView = new ImageView(image);
 
-                    private final Button btn = new Button(null, imageView);
+                    private Button btn = new Button(null, imageView);
 
-                    {
-                        btn.setOnAction((ActionEvent event) -> {
-                            Task data = getTableView().getItems().get(getIndex());
-                            taskId = data.getId();
-                            if (nome == "Editar") {
-                                try {
-                                    taskAction();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            } else {
-                                try {
-                                    taskAction();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                    }
+                    private long count;
 
                     @Override
-                    public void updateItem(Void item, boolean empty) {
+                    public void updateItem(Task item, boolean empty) {
                         super.updateItem(item, empty);
                         if (empty) {
                             setGraphic(null);
                         } else {
+                            home.HomeController.contador++;
+                            Task data = getTableView().getItems().get(getIndex());
+                            if (home.HomeController.contador == 1 && nome.equals("Completar") && data.isFinished()) {
+                                imageView = new ImageView(image2);
+                                btn = new Button(null, imageView);
+                                System.out.println(count);
+                            }
+
+                            acaoBotao();
+
                             setGraphic(btn);
                         }
                     }
+
+                    public void acaoBotao() {
+                        Task data = getTableView().getItems().get(getIndex());
+                        btn.setOnAction((ActionEvent event) -> {
+                            taskId = data.getId();
+                            if (nome.equals("Editar")) {
+                                try {
+                                    taskAction();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } else if (nome.equals("Excluir")) {
+                                excluirTask(taskId);
+                            } else {
+                                if (data.isFinished()) {
+                                    imageView = new ImageView(image);
+                                    btn = new Button(null, imageView);
+                                } else {
+                                    imageView = new ImageView(image2);
+                                    btn = new Button(null, imageView);
+                                }
+                                patchTask(!data.isFinished(), taskId);
+                            }
+                        });
+                    }
                 };
+
                 return cell;
             }
         };
-        
+
         colBtn.setCellFactory(cellFactory);
 
-        homeTable.getColumns().add(colBtn);
+        if (fimLista) {
+            homeTable.getColumns().add(colBtn);
+        } else {
+            homeTable.getColumns().add(0, colBtn);
+        }
 
     }
 
-    private void addCheckboxToTable() {
-        TableColumn<Task, Void> colCB = new TableColumn();
+    public void buscaTasks() {
+        data.clear();
+        homeTable.setItems(data);
+        List<Task> task = this.taskDAO.getTaskByIdUser(sessionDAO.getIdUserSession());
+        data.addAll(task);
 
-        Callback<TableColumn<Task, Void>, TableCell<Task, Void>> cellFactory = new Callback<TableColumn<Task, Void>, TableCell<Task, Void>>() {
-            @Override
-            public TableCell<Task, Void> call(final TableColumn<Task, Void> param) {
-                final TableCell<Task, Void> cell = new TableCell<Task, Void>() {
-
-                    private final CheckBox check = new CheckBox();
-
-                    {
-                        check.setSelected();
-                        check.setOnAction((ActionEvent event) -> {
-                        });
-                    }
-
-                    @Override
-                    public void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(check);
-                        }
-                    }
-                };
-                return cell;
-            }
-        };
-
-        colCB.setCellFactory(cellFactory);
-
-        homeTable.getColumns().add(0, colCB);
-
+        homeTable.setItems(data);
     }
 
     public void taskAction() throws IOException {
         homeTask.getScene().getWindow().hide();
         this.abreTela.abreTask();
         taskId = 0;
+    }
+
+    public void patchTask(boolean finish, long id) {
+        this.taskDAO.patchFinish(finish, id);
+        taskId = 0;
+        buscaTasks();
+    }
+
+    public void excluirTask(long id) {
+        this.taskDAO.deleteById(id);
+        taskId = 0;
+        buscaTasks();
     }
 }

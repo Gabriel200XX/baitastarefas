@@ -15,12 +15,10 @@ import utils.AbreTela;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import home.HomeController;
@@ -67,7 +65,7 @@ public class TaskController implements Initializable {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         task.setIdUser(sessionDAO.getIdUserSession());
         task.setName(taskTarefa.getText());
-        task.setPrevisionFinish(new java.sql.Date(format.parse(taskPrevisao.getValue().toString()).getTime()));
+        task.setPrevisionFinish(new java.sql.Date(format.parse(taskPrevisao.getValue().plusDays(1).toString()).getTime()));
         if (this.taskId > 0) {
             task.setId(this.taskId);
             this.taskDAO.update(task);
@@ -76,9 +74,5 @@ public class TaskController implements Initializable {
         }
         taskEnviar.getScene().getWindow().hide();
         this.abreTela.abreHome();
-    }
-
-    public void excluirTask() {
-
     }
 }

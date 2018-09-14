@@ -45,14 +45,14 @@ public class TaskDAO {
         }
     }
 
-    public void patchFinish(Task task) {
+    public void patchFinish(boolean finish, long id) {
         try {
             // Cria a conexão com o banco de dados
             Connection conn = (new ConnectionFactory()).getConnection();
             PreparedStatement p =
                     conn.prepareStatement("UPDATE Tasks SET finished = ? WHERE idTasks = ?");
-            p.setBoolean(1, task.isFinished());
-            p.setLong(1, task.getId());
+            p.setBoolean(1, finish);
+            p.setLong(2, id);
 
             p.execute();
             p.close();
@@ -62,13 +62,13 @@ public class TaskDAO {
         }
     }
 
-    public void deleteById(Task task) {
+    public void deleteById(long id) {
         try {
             // Cria a conexão com o banco de dados
             Connection conn = (new ConnectionFactory()).getConnection();
             PreparedStatement p =
                     conn.prepareStatement("DELETE FROM Tasks WHERE idTasks = ?");
-            p.setLong(1, task.getId());
+            p.setLong(1, id);
 
             p.execute();
             p.close();
@@ -110,7 +110,7 @@ public class TaskDAO {
             // Cria a conexão com o banco de dados
             Connection conn = (new ConnectionFactory()).getConnection();
             PreparedStatement p =
-                    conn.prepareStatement("SELECT idTasks, name, previsionFinish, createdAt FROM Tasks WHERE Users_idUsers = ?");
+                    conn.prepareStatement("SELECT idTasks, name, previsionFinish, createdAt, finished FROM Tasks WHERE Users_idUsers = ?");
             p.setLong(1, id);
 
             ResultSet resultado = p.executeQuery();
@@ -122,6 +122,7 @@ public class TaskDAO {
                 task.setName(resultado.getString(2));
                 task.setPrevisionFinish(resultado.getDate(3));
                 task.setCreatedAt(resultado.getTimestamp(4));
+                task.setFinished(resultado.getBoolean(5));
 
                 taskList.add(task);
             }
