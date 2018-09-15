@@ -22,6 +22,8 @@ public class UserDAO {
             p.setString(1, user.getName());
             p.setString(2, user.getUser());
             p.setString(3, user.getPassword());
+            p.execute();
+            p.close();
 
             PreparedStatement pS =
             conn.prepareStatement("SELECT MAX(idUsers) FROM Users");
@@ -31,8 +33,7 @@ public class UserDAO {
                 this.sessionDAO.createSession(resultado.getLong(1));
             }
 
-            p.execute();
-            p.close();
+            pS.close();
             conn.close();
         }catch(Exception e) {
             e.printStackTrace();
