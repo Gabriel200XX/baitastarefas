@@ -66,12 +66,12 @@
                   </TableColumn>
                   <TableColumn prefWidth="134.0" text="Previsão Término">
                      <cellValueFactory>
-                        <PropertyValueFactory property="previsionFinish" />
+                        <PropertyValueFactory property="previsionFinishFormated" />
                      </cellValueFactory>
                   </TableColumn>
                   <TableColumn prefWidth="138.0" text="Data de Criação">
                      <cellValueFactory>
-                        <PropertyValueFactory property="createdAt" />
+                        <PropertyValueFactory property="createdAtFormated" />
                      </cellValueFactory>
                   </TableColumn>
               </columns>

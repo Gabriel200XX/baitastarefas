@@ -37,7 +37,6 @@ public class HomeController implements Initializable {
 
     private final ObservableList<Task> data =
             FXCollections.observableArrayList();
-    private static long contador;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

@@ -14,6 +14,8 @@ public class Task {
     private Date previsionFinish;
     private boolean finished;
     private Timestamp createdAt;
+    private String previsionFinishFormated;
+    private String createdAtFormated;
 
     public long getId() {
         return id;
@@ -41,6 +43,8 @@ public class Task {
     }
     public void setPrevisionFinish(Date previsionFinish) {
         this.previsionFinish = previsionFinish;
+        String[] data = previsionFinish.toString().split("-");
+        this.setPrevisionFinishFormated(data[2] + "/" + data[1] + "/" + data[0]);
     }
 
     public Timestamp getCreatedAt() {
@@ -49,6 +53,9 @@ public class Task {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+        String[] dataHora = createdAt.toString().split(" ");
+        String[] data = dataHora[0].split("-");
+        this.setCreatedAtFormated(data[2] + "/" + data[1] + "/" + data[0] + " " + dataHora[1]);
     }
 
     public boolean isFinished() {
@@ -57,5 +64,21 @@ public class Task {
 
     public void setFinished(boolean finished) {
         this.finished = finished;
+    }
+
+    public String getPrevisionFinishFormated() {
+        return previsionFinishFormated;
+    }
+
+    public void setPrevisionFinishFormated(String previsionFinishFormated) {
+        this.previsionFinishFormated = previsionFinishFormated;
+    }
+
+    public String getCreatedAtFormated() {
+        return createdAtFormated;
+    }
+
+    public void setCreatedAtFormated(String createdAtFormated) {
+        this.createdAtFormated = createdAtFormated;
     }
 }
