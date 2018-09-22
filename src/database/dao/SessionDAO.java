@@ -1,10 +1,14 @@
 package database.dao;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import utils.AbreTela;
 
 public class SessionDAO {
+
+    private AbreTela abreTela;
 
     public void createSession(long idUser) {
         try {
@@ -43,6 +47,11 @@ public class SessionDAO {
             e.printStackTrace();
         }
         return id;
+    }
+
+    public void logout() throws IOException {
+        this.abreTela = new AbreTela();
+        this.abreTela.abreLogin();
     }
 
 }

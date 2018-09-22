@@ -26,6 +26,8 @@ import utils.AbreTela;
 
 public class HomeController implements Initializable {
     @FXML
+    private Button homeLogout;
+    @FXML
     private Button homeTask;
     @FXML
     private TableView homeTable;
@@ -160,5 +162,10 @@ public class HomeController implements Initializable {
         this.taskDAO.deleteById(id);
         taskId = 0;
         buscaTasks();
+    }
+
+    public void logoutAction() throws IOException {
+        homeLogout.getScene().getWindow().hide();
+        this.sessionDAO.logout();
     }
 }
