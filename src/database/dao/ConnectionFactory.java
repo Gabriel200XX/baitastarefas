@@ -8,7 +8,7 @@ public class ConnectionFactory {
 
     private static final  String stringConexao = "jdbc:mysql://localhost:3306/baitastarefas_db?useTimezone=true&serverTimezone=UTC&autoReconnect=true&useSSL=false";
     private static final String usuarioBD = "root";
-    private static final String senhaBD = "Egb042415!";
+    private static final String senhaBD = "";
 
     // Obtém uma nova Conexão
     public Connection getConnection() {

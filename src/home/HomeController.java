@@ -26,6 +26,8 @@ import utils.AbreTela;
 
 public class HomeController implements Initializable {
     @FXML
+    private Label fullName;
+    @FXML
     private Button homeLogout;
     @FXML
     private Button homeTask;
@@ -47,6 +49,7 @@ public class HomeController implements Initializable {
         this.abreTela = new AbreTela();
 
         buscaTasks();
+        fullName.setText("Olá, " + sessionDAO.getNameUserSession());
 
         FileInputStream inputUCheck = null;
         FileInputStream inputCheck = null;

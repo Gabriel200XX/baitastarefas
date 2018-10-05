@@ -29,8 +29,6 @@ public class SessionDAO {
     public long getIdUserSession() {
         long id = 0;
         try {
-            // Cria a conexão com o banco de dados
-            //SELECT * FROM Session ORDER BY createdAt DESC LIMIT 1
             Connection conn = (new ConnectionFactory()).getConnection();
             PreparedStatement p =
                     conn.prepareStatement("SELECT Users_idUsers FROM Session ORDER BY createdAt DESC LIMIT 1");
@@ -47,6 +45,29 @@ public class SessionDAO {
             e.printStackTrace();
         }
         return id;
+    }
+
+    public String getNameUserSession() {
+        String name = "";
+        try {
+            // Cria a conexão com o banco de dados
+            //SELECT * FROM Session ORDER BY createdAt DESC LIMIT 1
+            Connection conn = (new ConnectionFactory()).getConnection();
+            PreparedStatement p =
+                    conn.prepareStatement("SELECT name FROM users WHERE idUsers = (SELECT Users_idUsers FROM Session ORDER BY createdAt DESC LIMIT 1)");
+
+            ResultSet resultado = p.executeQuery();
+
+            if (resultado.next()){
+                name = resultado.getString(1);
+            }
+
+            p.close();
+            conn.close();
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        return name;
     }
 
     public void logout() throws IOException {
